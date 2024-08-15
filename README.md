@@ -14,6 +14,9 @@ steps:
     uses: "cobot/couchdb-action@master"
     with:
       couchdb version: '2.3.1'
+    env:
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: password
   - name: Do something
     run: |
       curl http://127.0.0.1:5984/
