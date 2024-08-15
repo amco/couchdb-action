@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Starting Docker..."
-ERL_QUERIES="${ERL_NATIVE_QUERY:-false}"
+ERL_QUERIES="${ERL_NATIVE_QUERY:-true}"
 NODENAME="${NODENAME:-localhost}"
 
 sh -c "docker run -d -p 5984:5984 -p 5986:5986 -e \"NODENAME=${NODENAME}\" -e \"COUCHDB_USER=${COUCHDB_USER}\" -e \"COUCHDB_PASSWORD=${COUCHDB_PASSWORD}\" --tmpfs /ram_disk couchdb:${INPUT_COUCHDB_VERSION}"

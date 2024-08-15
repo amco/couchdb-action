@@ -20,6 +20,7 @@ jobs:
         couchdb version: ${{ matrix.couchdb }}
       env:
         NODENAME: localhost
+        ERL_NATOVE_QUERY: true
         COUCHDB_USER: admin
         COUCHDB_PASSWORD: password
     - name: Test that CouchDB can be accessed
