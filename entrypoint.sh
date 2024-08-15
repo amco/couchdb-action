@@ -4,7 +4,7 @@ echo "Starting Docker..."
 
 ERL_QUERIES="${ERL_NATIVE_QUERY:-false}"
 
-sh -c "docker run -d -p 5984:5984 -p 5986:5986 COUCHDB_USER=$COUCHDB_USER COUCHDB_PASSWORD=$COUCHDB_PASSWORD --tmpfs /ram_disk couchdb:$INPUT_COUCHDB_VERSION"
+sh -c "docker run -d -p 5984:5984 -p 5986:5986 NODENAME=$NODENAME COUCHDB_USER=$COUCHDB_USER COUCHDB_PASSWORD=$COUCHDB_PASSWORD --tmpfs /ram_disk couchdb:$INPUT_COUCHDB_VERSION"
 
 # CouchDB container name
 export NAME=`docker ps --format "{{.Names}}" --last 1`
