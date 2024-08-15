@@ -13,14 +13,14 @@ jobs:
       matrix:
         couchdb: ["3.3", "3.2", "3.1", "2.3"]
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Set up CouchDB
       uses: ./
       with:
         couchdb version: ${{ matrix.couchdb }}
       env:
         COUCHDB_USER: admin
-        COUCHDB_PASSOWRD: password
+        COUCHDB_PASSWORD: password
     - name: Test that CouchDB can be accessed
       run: curl -sS -f http://admin:password@localhost:5984/
     - name: Test that system databases are there
