@@ -11,7 +11,6 @@ export NAME=`docker ps --format "{{.Names}}" --last 1`
 
 docker exec $NAME sh -c "mkdir -p /opt/couchdb/etc/local.d && echo \"[couchdb]\ndatabase_dir = /ram_disk\nview_index_dir = /ram_disk\ndelayed_commits = true\n[httpd]\nsocket_options = [{nodelay, true}]\n[native_query_servers]\nenable_erlang_query_server=${ERL_QUERIES}\" >> /opt/couchdb/etc/local.d/01-github-action-custom.ini"
 
-
 wait_for_couchdb() {
   if getent hosts host.docker.internal >/dev/null 2>&1; then
     hostip=host.docker.internal
@@ -21,7 +20,7 @@ wait_for_couchdb() {
 
   echo "Waiting for CouchDB at ${hostip}..."
 
-  curl -I http://$hostip:5984/
+  curl -I http://localhost:5984/
 
   for i in {1..60}; do
     if curl -s http://$hostip:5984/ >/dev/null; then
