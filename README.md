@@ -16,7 +16,7 @@ steps:
   - name: Set up CouchDB
     uses: "cobot/couchdb-action@main"
     with:
-      couchdb version: "2.3.1"
+      couchdb version: "3.5.0"
   - name: Do something
     run: |
       curl http://admin:admin@127.0.0.1:5984/
