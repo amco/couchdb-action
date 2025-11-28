@@ -16,6 +16,8 @@ wait_for_couchdb() {
   hostip=$(ip route show | awk '/default/ {print $3}')
   echo "Waiting for CouchDB at ${hostip}..."
 
+  curl -I http://$hostip:5984/
+
   for i in {1..60}; do
     if curl -s http://$hostip:5984/ >/dev/null; then
       echo "CouchDB is up"
