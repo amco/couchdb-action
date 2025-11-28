@@ -13,7 +13,12 @@ docker exec $NAME sh -c "mkdir -p /opt/couchdb/etc/local.d && echo \"[couchdb]\n
 
 
 wait_for_couchdb() {
-  hostip=$(ip route show | awk '/default/ {print $3}')
+  if getent hosts host.docker.internal >/dev/null 2>&1; then
+    hostip=host.docker.internal
+  else
+    hostip=$(ip route | awk '/default/ {print $3}')
+  fi
+
   echo "Waiting for CouchDB at ${hostip}..."
 
   curl -I http://$hostip:5984/
