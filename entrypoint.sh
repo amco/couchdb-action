@@ -11,15 +11,23 @@ export NAME=`docker ps --format "{{.Names}}" --last 1`
 
 docker exec $NAME sh -c "mkdir -p /opt/couchdb/etc/local.d && echo \"[couchdb]\ndatabase_dir = /ram_disk\nview_index_dir = /ram_disk\ndelayed_commits = true\n[httpd]\nsocket_options = [{nodelay, true}]\n[native_query_servers]\nenable_erlang_query_server=${ERL_QUERIES}\" >> /opt/couchdb/etc/local.d/01-github-action-custom.ini"
 
-wait_for_couchdb() {
-  echo "Waiting for CouchDB..."
-  hostip=$(ip route show | awk '/default/ {print $3}')
 
-  while ! curl -f http://$hostip:5984/ &> /dev/null
-  do
-    echo "."
+wait_for_couchdb() {
+  hostip=$(ip route show | awk '/default/ {print $3}')
+  echo "Waiting for CouchDB at ${hostip}..."
+
+  for i in {1..60}; do
+    if curl -s http://$hostip:5984/ >/dev/null; then
+      echo "CouchDB is up"
+      return 0
+    fi
+
+    echo "Still waiting ($i)..."
     sleep 1
   done
+
+  echo "CouchDB did not become available after 60 seconds"
+  exit 1
 }
 wait_for_couchdb
 
