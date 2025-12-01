@@ -23,8 +23,10 @@ runs:
         docker build --tag custom-couchdb -f $GITHUB_ACTION_PATH/Dockerfile.couchdb $GITHUB_ACTION_PATH
         docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk custom-couchdb
       shell: bash
+
     - name: Debug Couchdb
       run: docker ls -a | grep couchdb
+      shell: bash
 
     - name: Wait for CouchDB to be ready
       run: $GITHUB_ACTION_PATH/wait-for-couchdb.sh
