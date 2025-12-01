@@ -24,8 +24,7 @@ runs:
         docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk custom-couchdb
       shell: bash
     - name: Debug Couchdb
-      run: |
-        docker ls -a | grep couchdb
+      run: docker ls -a | grep couchdb
 
     - name: Wait for CouchDB to be ready
       run: $GITHUB_ACTION_PATH/wait-for-couchdb.sh
