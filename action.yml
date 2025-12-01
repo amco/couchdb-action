@@ -24,6 +24,15 @@ runs:
         docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk custom-couchdb
       shell: bash
 
+    - name: Check CouchDB Image
+      run: |
+        echo
+        echo "Inspecting image filesystem (run temporary container):"
+        docker run --rm --entrypoint ls docker.io/library/custom-couchdb -la /opt/couchdb/etc/local.d || true
+        echo "Showing the config file contents (if present):"
+        docker run --rm --entrypoint cat docker.io/library/custom-couchdb /opt/couchdb/etc/local.d/01-github-action-custom.ini || true
+      shell: bash
+
     - name: Wait for CouchDB to be ready
       run: $GITHUB_ACTION_PATH/wait-for-couchdb.sh
       shell: bash
