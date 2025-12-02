@@ -28,6 +28,11 @@ runs:
       run: $GITHUB_ACTION_PATH/wait-for-couchdb.sh
       shell: bash
 
+    - name: Debug CouchDB Logs
+      if: failure() || success() # Run even if previous steps failed
+      run: docker logs $(docker ps -q --filter ancestor=custom-couchdb)
+      shell: bash
+
     - name: Set up CouchDB system databases
       run: |
         curl -sS 'http://admin:admin@127.0.0.1:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}' > /dev/null
