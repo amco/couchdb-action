@@ -2,7 +2,7 @@
 
 echo "Waiting for CouchDB..."
 retries=0
-max_retries=20
+max_retries=60
 
 until curl --output /dev/null --silent --head --fail http://127.0.0.1:5984/; do
   retries=$((retries+1))
