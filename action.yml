@@ -21,7 +21,7 @@ runs:
       run: |
         sed -i "s/COUCHDB_VERSION/$INPUT_COUCHDB_VERSION/" $GITHUB_ACTION_PATH/Dockerfile.couchdb
         docker build --tag custom-couchdb -f $GITHUB_ACTION_PATH/Dockerfile.couchdb $GITHUB_ACTION_PATH
-        docker run -d -p 5984:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=admin -p 5986:5986 --tmpfs /ram_disk custom-couchdb
+        docker run -d -p 5984:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=admin -p 5986:5986 custom-couchdb
       shell: bash
 
     - name: Wait for CouchDB to be ready
@@ -29,8 +29,9 @@ runs:
       shell: bash
 
     - name: Debug CouchDB Logs
-      if: failure() || success() # Run even if previous steps failed
-      run: docker logs $(docker ps -q --filter ancestor=custom-couchdb)
+      if: failure() || success()
+      # logic: find the most recent container (-l) created from the image and show logs
+      run: docker logs $(docker ps -a -q --filter ancestor=custom-couchdb | head -n 1)
       shell: bash
 
     - name: Set up CouchDB system databases
